@@ -20,11 +20,11 @@ import time
 
 def load_data():
     print("Loading data")
-    file_path = '../synthetic_retail_data_for_demand_prediction.csv'
+    file_path = 'synthetic_retail_data_for_demand_prediction.csv'
     return pd.read_csv(file_path)
 
 def preprocess(data):
-    # Parse the date column
+    # @title Step 4: Split Data into Training and Testing Sets
     data['Date of Sale'] = pd.to_datetime(data['Date of Sale'])
 
     # Set the date column as the index
@@ -34,22 +34,22 @@ def preprocess(data):
     ts_data = data[['Units Sold']]
 
     # Add additional parameters (e.g., Country, Store ID, Product ID, Product Category)
-    exog_data = pd.get_dummies(data[['Country', 'Store ID', 'Product ID', 'Product Category']], drop_first=True)
+    time_series_data = pd.get_dummies(data[['Country', 'Store ID', 'Product ID', 'Product Category']], drop_first=True)
 
     # Convert boolean columns to integers
-    bool_columns = exog_data.select_dtypes(include=['bool']).columns
-    exog_data[bool_columns] = exog_data[bool_columns].astype(int)
+    bool_columns = time_series_data.select_dtypes(include=['bool']).columns
+    time_series_data[bool_columns] = time_series_data[bool_columns].astype(int)
 
-    # Ensure all exog variables are numeric
-    exog_data = exog_data.apply(pd.to_numeric, errors='coerce')
+    # Ensure time_series_data variables are numeric
+    time_series_data = time_series_data.apply(pd.to_numeric, errors='coerce')
 
-    # Check the data types of the exogenous variables
-    print("Exogenous variables data types after conversion:\n", exog_data.dtypes)
+    # Check the data types of the time_series_data variables
+    print("time_series_data variables data types after conversion:\n", time_series_data.dtypes)
 
     # Split the data into training and testing sets
     split_point = int(len(ts_data) * 0.8)
     train_data, test_data = ts_data[:split_point], ts_data[split_point:]
-    train_exog, test_exog = exog_data[:split_point], exog_data[split_point:]
+    train_ts, test_ts = time_series_data[:split_point], time_series_data[split_point:]
 
     # Ensure the data is numeric
     train_data = train_data.astype(float)
@@ -57,21 +57,24 @@ def preprocess(data):
 
     print(f"Training data: {len(train_data)} records")
     print(f"Testing data: {len(test_data)} records")
-    print(f"Training exogenous data types:\n{train_exog.dtypes}")
+    print(f"Training time_series_data data types:\n{train_ts.dtypes}")
 
     # Ensure no non-numeric columns remain
-    non_numeric_columns = train_exog.select_dtypes(exclude=['number']).columns
+    non_numeric_columns = train_ts.select_dtypes(exclude=['number']).columns
     if len(non_numeric_columns) > 0:
         raise ValueError(f"Non-numeric columns in training exogenous data: {non_numeric_columns}")
     else:
-        print("All training exogenous data columns are numeric.")
+        print("All training time_series_data data columns are numeric.")
+
+    print(f"Training data: {len(train_data)} records")
+    print(f"Testing data: {len(test_data)} records")
     
-    return train_data, test_data, train_exog, test_exog
+    return train_data, test_data, train_ts, test_ts
 
 
-def train(train_data, train_exog):
+def train(train_data, train_ts):
     # Define the SARIMAX model with exogenous variables
-    sarima_model = SARIMAX(train_data, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12), exog=train_exog, enforce_stationarity=False, enforce_invertibility=False)
+    sarima_model = SARIMAX(train_data, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12), exog=train_ts, enforce_stationarity=False, enforce_invertibility=False)
 
     # Fit the model
     sarima_results = sarima_model.fit(disp=False)
@@ -82,4 +85,3 @@ def train(train_data, train_exog):
     return sarima_results
 
 
-print(load_data())
