@@ -1,5 +1,7 @@
 # Instructions to run Train Model and Run Predictions
 
+Switch to `assignment` folder.
+
 ## Google Colab Setup
 * Import `forecast.ipynb`
 * Upload `synthetic_retail_data_for_demand_prediction.csv` file when asked for
@@ -17,6 +19,10 @@ In a terminal run, switch to the `assignment` folder and run
 ```
 python test_unit.py
 ```
+
+## Synthetic Data Setup
+* Execute `AI_ML_Project_Synthetic_data_generation.ipynb` file to generate synthetic data for the purpose of this assignment
+* A copy of this has already been checked into `synthetic_retail_data_for_demand_prediction.csv` for ready usage.
 
 ## Run Predictions
 * Code to run predictions have been captured in `forecast.ipynb`
