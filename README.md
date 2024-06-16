@@ -1,9 +1,9 @@
-# Instructions to run Train Model and Run Predictions
+# GROUP 3 CAPSTONE PROJECT - PROJECT SUPPLY CHAIN
 
 Switch to `assignment` folder.
 
 ## Google Colab Setup
-* Import `forecast.ipynb`
+* Import `3_forecast.ipynb`
 * Upload `synthetic_retail_data_for_demand_prediction.csv` file when asked for
 * Note: Code from `kellys.py` is copied to this `forecast.ipynb` notebook to make things easy to run in Colab.
 
@@ -20,12 +20,16 @@ In a terminal run, switch to the `assignment` folder and run
 python test_unit.py
 ```
 
-## Synthetic Data Setup
-* Execute `AI_ML_Project_Synthetic_data_generation.ipynb` file to generate synthetic data for the purpose of this assignment
+## Notebooks
+### Synthetic Data Setup
+* Execute `1_synthetic_data_generation.ipynb` file to generate synthetic data for the purpose of this assignment
 * A copy of this has already been checked into `synthetic_retail_data_for_demand_prediction.csv` for ready usage.
 
+### Data Explorations
+All our data explorations have been captured in `2_data_explorations.ipynb` file
+
 ## Run Predictions
-* Code to run predictions have been captured in `forecast.ipynb`
+* Code to run predictions have been captured in `3_forecast.ipynb`
 * Input the required values and get the predictions
 ```py
     # Define future dates for which we want to forecast
