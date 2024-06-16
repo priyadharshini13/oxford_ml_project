@@ -1,0 +1,7 @@
+prophet
+scikit-learn
+behave
+pandas
+numpy
+statsmodels
+seaborn
